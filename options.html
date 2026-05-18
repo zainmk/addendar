@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Addendar – Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span class="brand-name">Addendar</span>
+      <span class="brand-sub">/ Settings</span>
+    </div>
+  </header>
+
+  <div class="page-bg">
+    <div class="content">
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Anthropic API Key</h2>
+          <p class="card-desc">
+            Addendar uses Claude's vision model to read your screenshots.
+            Your key is stored locally and never leaves your device.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <label class="label" for="apiKeyInput">API Key</label>
+          <div class="input-wrap">
+            <input
+              type="password"
+              id="apiKeyInput"
+              class="input"
+              placeholder="sk-ant-api03-…"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <button id="toggleVisibility" class="input-action" title="Show / hide key">
+              <svg id="eyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg id="eyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button id="saveBtn" class="btn btn-dark">Save Key</button>
+          <button id="clearBtn" class="btn btn-outline-danger">Clear</button>
+        </div>
+
+        <div id="status" class="status hidden"></div>
+      </div>
+
+      <div class="card-info">
+        <p class="info-title">Get an API Key</p>
+        <ol class="info-list">
+          <li>Go to <strong>console.anthropic.com</strong></li>
+          <li>Sign in or create a free account</li>
+          <li>Navigate to <strong>API Keys</strong></li>
+          <li>Click <strong>Create Key</strong> and paste it above</li>
+        </ol>
+        <a
+          href="https://console.anthropic.com/settings/keys"
+          target="_blank"
+          rel="noopener"
+          class="link-external"
+        >
+          Open Anthropic Console
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Addendar</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <img src="icons/icon48.png" class="brand-icon" alt="">
+      <span class="brand-name">Addendar</span>
+    </div>
+    <button id="settingsBtn" class="icon-btn" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="page-bg">
+    <div class="card">
+
+      <!-- No API Key -->
+      <div id="noKeySection" class="section hidden">
+        <div class="empty-state">
+          <div class="empty-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <p class="empty-title">API Key Required</p>
+          <p class="empty-text">Add your Anthropic API key to start extracting calendar events from screenshots.</p>
+          <button id="goToSettingsBtn" class="btn btn-dark">Open Settings</button>
+        </div>
+      </div>
+
+      <!-- Upload -->
+      <div id="uploadSection" class="section hidden">
+
+        <!-- Mode toggle -->
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeScreenshot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18M9 21V9"/>
+            </svg>
+            Screenshot
+          </button>
+          <button class="mode-btn" id="modeText">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M4 12h16M4 18h10"/>
+            </svg>
+            Text
+          </button>
+        </div>
+
+        <!-- Screenshot mode -->
+        <div id="screenshotMode">
+          <div id="dropZone" class="drop-zone">
+            <div class="drop-visual">
+              <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <path d="M3 9h18"/>
+                <path d="M15 13l-3-3-3 3M12 10v7"/>
+              </svg>
+            </div>
+            <p class="drop-title">Drop your screenshot</p>
+            <p class="drop-subtitle">or <button id="browseBtn" class="link-btn">browse files</button></p>
+            <p class="drop-hint">PNG · JPEG · Max 5 MB · <kbd>Ctrl+V</kbd> to paste</p>
+            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg" hidden>
+          </div>
+        </div>
+
+        <!-- Text mode -->
+        <div id="textMode" class="hidden">
+          <textarea
+            id="textInput"
+            class="text-input"
+            placeholder="Paste or type event details — an email, invite, message, or any text that contains date and time info…"
+          ></textarea>
+          <button id="textExtractBtn" class="btn btn-dark btn-full" style="margin-top:10px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <line x1="11" y1="8" x2="11" y2="14"/>
+              <line x1="8" y1="11" x2="14" y2="11"/>
+            </svg>
+            Extract Calendar Data
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Preview -->
+      <div id="previewSection" class="section hidden">
+        <div class="preview-container">
+          <img id="previewImg" class="preview-img" alt="Screenshot preview">
+          <button id="changeImgBtn" class="change-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Change
+          </button>
+        </div>
+        <button id="extractBtn" class="btn btn-dark btn-full">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="11" y1="8" x2="11" y2="14"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+          Extract Calendar Data
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div id="loadingSection" class="section hidden">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p class="loading-text">Analyzing screenshot…</p>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="resultsSection" class="section hidden">
+
+        <!-- Dark event banner -->
+        <div class="event-banner">
+          <p class="banner-label">Event</p>
+          <p class="banner-title" id="bannerTitle">—</p>
+        </div>
+
+        <div class="result-list">
+          <div class="result-row" id="rowDate">
+            <div class="result-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              Date
+            </div>
+            <div class="result-value" id="valDate">—</div>
+          </div>
+
+          <div class="result-row" id="rowTime">
+            <div class="result-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Time
+            </div>
+            <div class="result-value" id="valTime">—</div>
+          </div>
+
+          <div class="result-row" id="rowLocation">
+            <div class="result-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Location
+            </div>
+            <div class="result-value" id="valLocation">—</div>
+          </div>
+
+          <div class="result-row" id="rowDescription">
+            <div class="result-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              Notes
+            </div>
+            <div class="result-value" id="valDescription">—</div>
+          </div>
+        </div>
+
+        <div class="action-group">
+          <button id="googleCalBtn" class="btn btn-dark btn-full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Add to Google Calendar
+          </button>
+          <button id="icsBtn" class="btn btn-outline btn-full">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download .ics
+          </button>
+        </div>
+
+        <div class="results-footer">
+          <button id="newScreenshotBtn" class="link-btn small">New screenshot</button>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="errorSection" class="section hidden">
+        <div class="error-state">
+          <div class="error-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <p id="errorMessage" class="error-text">Something went wrong.</p>
+          <div class="error-actions">
+            <button id="retryBtn" class="btn btn-dark">Try Again</button>
+            <button id="errorNewBtn" class="btn btn-outline">New Screenshot</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
