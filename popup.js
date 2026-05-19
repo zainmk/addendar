@@ -228,8 +228,22 @@ async function runExtraction() {
 
 // ─── Claude API ───────────────────────────────────────────────────────────────
 
+function todayContext() {
+  const now = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dow = days[now.getDay()];
+  const mon = months[now.getMonth()];
+  const day = now.getDate();
+  const year = now.getFullYear();
+  const iso  = `${year}-${String(now.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  return `Today is ${dow}, ${mon} ${day}, ${year} (${iso}). Use this as the reference point to resolve any relative date expressions in the input (e.g. "tomorrow", "next Friday", "in two weeks") into exact YYYY-MM-DD dates.`;
+}
+
 async function callClaudeAPI(apiKey, base64Data, mediaType) {
-  const prompt = `Analyze this screenshot and extract any calendar event information present.
+  const prompt = `${todayContext()}
+
+Analyze this screenshot and extract any calendar event information present.
 
 Return a JSON object with exactly these fields:
 {
@@ -306,7 +320,9 @@ async function callClaudeAPIText(apiKey, text) {
       max_tokens: 1024,
       messages: [{
         role: 'user',
-        content: `Extract calendar event information from the following text.
+        content: `${todayContext()}
+
+Extract calendar event information from the following text.
 
 Return a JSON object with exactly these fields:
 {
