@@ -81,7 +81,7 @@ init();
 
 function getApiKey() {
   return new Promise(resolve => {
-    chrome.storage.sync.get('apiKey', data => resolve(data.apiKey || ''));
+    chrome.storage.local.get('apiKey', data => resolve(data.apiKey || ''));
   });
 }
 

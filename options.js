@@ -6,7 +6,7 @@ const eyeOpen  = document.getElementById('eyeOpen');
 const eyeClosed = document.getElementById('eyeClosed');
 
 // Load saved key on open
-chrome.storage.sync.get('apiKey', data => {
+chrome.storage.local.get('apiKey', data => {
   if (data.apiKey) input.value = data.apiKey;
 });
 
@@ -29,14 +29,14 @@ saveBtn.addEventListener('click', () => {
     showStatus('That doesn\'t look like an Anthropic API key. Keys start with "sk-ant-".', 'error');
     return;
   }
-  chrome.storage.sync.set({ apiKey: key }, () => {
+  chrome.storage.local.set({ apiKey: key }, () => {
     showStatus('API key saved successfully.', 'success');
   });
 });
 
 // Clear
 clearBtn.addEventListener('click', () => {
-  chrome.storage.sync.remove('apiKey', () => {
+  chrome.storage.local.remove('apiKey', () => {
     input.value = '';
     showStatus('API key cleared.', 'success');
   });
